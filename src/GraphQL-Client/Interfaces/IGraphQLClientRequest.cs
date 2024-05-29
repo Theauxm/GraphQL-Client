@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace GraphQL;
 
-public interface IGraphQLClientRequest<TOut> : IGenericGraphQLClientRequest
+public interface IGraphQLClientRequest<out TOut> : IGenericGraphQLClientRequest
 {
     public TOut GetNestedResponse(JsonElement response)
     {
@@ -13,6 +13,6 @@ public interface IGraphQLClientRequest<TOut> : IGenericGraphQLClientRequest
             .Aggregate(response, (current, property) => current.GetProperty(property))
             .GetRawText();
 
-        return JsonSerializer.Deserialize<TOut>(resultData);
+        return JsonSerializer.Deserialize<TOut>(resultData) ?? throw new InvalidOperationException();
     }
 }

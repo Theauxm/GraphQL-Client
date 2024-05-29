@@ -3,32 +3,22 @@ using GraphQLParser.AST;
 
 namespace GraphQL;
 
-public class GraphQLClientExecutor : IGraphQLClientExecutor, IDisposable
+public class GraphQLClientExecutor(
+    IGraphQLClientValidator queryValidator,
+    IGraphQLClientConfiguration graphQlClientConfiguration)
+    : IGraphQLClientExecutor, IDisposable
 {
-    private readonly IGraphQLClientValidator _queryValidator;
-
-    private readonly HttpClient _httpClient;
-
-    private readonly GraphQLHttpClient _graphQLClient;
-
-    public GraphQLClientExecutor(
-        IGraphQLClientValidator queryValidator,
-        IGraphQLClientConfiguration graphQlClientConfiguration)
-    {
-        _queryValidator = queryValidator;
-
-        _httpClient = new HttpClient();
-        _httpClient.BaseAddress = graphQlClientConfiguration.BaseAddress;
-
-        _graphQLClient = new GraphQLHttpClient(
-            serializer: graphQlClientConfiguration.JsonSerializer,
-            options: graphQlClientConfiguration.GraphQLClientOptions,
-            httpClient: _httpClient);
-    }
+    private readonly GraphQLHttpClient _graphQLClient = new(
+        serializer: graphQlClientConfiguration.JsonSerializer,
+        options: graphQlClientConfiguration.GraphQLClientOptions,
+        httpClient: new HttpClient()
+        {
+            BaseAddress = graphQlClientConfiguration.BaseAddress
+        });
 
     public async Task<TReturn> Run<TReturn>(IGraphQLClientRequest<TReturn> request)
     {
-        var operationType = await _queryValidator.Validate(request.Query);
+        var operationType = await queryValidator.Validate(request.Query);
 
         var httpRequest = new GraphQLHttpRequest(request.Query);
 
@@ -47,7 +37,6 @@ public class GraphQLClientExecutor : IGraphQLClientExecutor, IDisposable
 
     public void Dispose()
     {
-        _httpClient.Dispose();
         _graphQLClient.Dispose();
     }
 }

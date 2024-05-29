@@ -7,26 +7,15 @@ using GraphQLParser.AST;
 
 namespace GraphQL;
 
-public class GraphQLClientValidator : IGraphQLClientValidator
+public class GraphQLClientValidator(IGraphQLClientConfiguration graphQLClientConfiguration) : IGraphQLClientValidator
 {
-    public ISchema Schema { get; }
+    public ISchema Schema { get; } = graphQLClientConfiguration.IntrospectSchema();
 
-    private readonly DocumentValidator _validator;
+    private readonly DocumentValidator _validator = new();
 
-    private readonly GraphQLDocumentBuilder _documentBuilder;
+    private readonly GraphQLDocumentBuilder _documentBuilder = new();
 
-    private ConcurrentDictionary<string, OperationType> CachedQueries { get; }
-
-    public GraphQLClientValidator(IGraphQLClientConfiguration graphQLClientConfiguration)
-    {
-        _validator = new DocumentValidator();
-
-        _documentBuilder = new GraphQLDocumentBuilder();
-
-        CachedQueries = new ConcurrentDictionary<string, OperationType>();
-
-        Schema = graphQLClientConfiguration.IntrospectSchema();
-    }
+    private ConcurrentDictionary<string, OperationType> CachedQueries { get; } = new();
 
     public async Task<OperationType> Validate(string query)
     {

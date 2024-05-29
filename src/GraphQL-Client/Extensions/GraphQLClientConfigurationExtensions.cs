@@ -14,7 +14,7 @@ public static class GraphQLClientConfigurationExtensions
         => FetchSchemaJson(configuration)
             .AsSchema();
 
-    private static JsonElement FetchSchemaJson(IGraphQLClientConfiguration configuration)
+    public static JsonElement FetchSchemaJson(IGraphQLClientConfiguration configuration)
     {
         using var httpClient = new HttpClient();
         httpClient.BaseAddress = configuration.BaseAddress;
@@ -44,7 +44,7 @@ public static class GraphQLClientConfigurationExtensions
         return response.Data;
     }
 
-    private static ISchema AsSchema(this JsonElement schemaJson)
+    public static ISchema AsSchema(this JsonElement schemaJson)
     {
         var schemaResponse = schemaJson.Deserialize<GraphQLData>(new JsonSerializerOptions
         {
@@ -52,7 +52,7 @@ public static class GraphQLClientConfigurationExtensions
             Converters = { new JsonStringEnumConverter() }
         });
 
-        if (schemaResponse.__Schema is null)
+        if (schemaResponse?.__Schema is null)
         {
             throw new Exception(
                 $"Could not get data from __schema introspection. Data likely came back null. Schema: ({schemaJson.GetRawText()})");
