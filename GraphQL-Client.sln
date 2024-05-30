@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQL-Client", "src\GraphQL-Client\GraphQL-Client.csproj", "{61EAA26A-CB75-49E1-8D3B-6A4602E4A6E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQL-Client.Integration", "tests\GraphQL-Client.Integration\GraphQL-Client.Integration.csproj", "{51C571D7-DF37-4D54-8B93-89A1FB5BE499}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{61EAA26A-CB75-49E1-8D3B-6A4602E4A6E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61EAA26A-CB75-49E1-8D3B-6A4602E4A6E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61EAA26A-CB75-49E1-8D3B-6A4602E4A6E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51C571D7-DF37-4D54-8B93-89A1FB5BE499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C571D7-DF37-4D54-8B93-89A1FB5BE499}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C571D7-DF37-4D54-8B93-89A1FB5BE499}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C571D7-DF37-4D54-8B93-89A1FB5BE499}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

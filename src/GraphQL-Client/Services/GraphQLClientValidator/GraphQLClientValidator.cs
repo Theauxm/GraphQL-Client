@@ -15,7 +15,7 @@ public class GraphQLClientValidator(IGraphQLClientConfiguration graphQLClientCon
 
     private readonly GraphQLDocumentBuilder _documentBuilder = new();
 
-    private ConcurrentDictionary<string, OperationType> CachedQueries { get; } = new();
+    internal ConcurrentDictionary<string, OperationType> CachedQueries { get; } = new();
 
     public async Task<OperationType> Validate(string query)
     {
@@ -44,28 +44,5 @@ public class GraphQLClientValidator(IGraphQLClientConfiguration graphQLClientCon
         CachedQueries[query] = queryType.Operation;
 
         return queryType.Operation;
-    }
-
-    public GraphQLClientValidator ValidateAssemblies(params Assembly[] assemblies)
-    {
-        foreach (var assembly in assemblies)
-        {
-            var queries = assembly
-                .GetTypes()
-                .Where(x => x.IsClass)
-                .Where(x => typeof(IGenericGraphQLClientRequest).IsAssignableFrom(x))
-                .ToList();
-
-            foreach (var query in queries)
-            {
-                var instance = (IGenericGraphQLClientRequest)Activator.CreateInstance(query)!;
-
-                var result = Task.Run(() => Validate(instance.Query)).Result;
-
-                CachedQueries[instance.Query] = result;
-            }
-        }
-
-        return this;
     }
 }
