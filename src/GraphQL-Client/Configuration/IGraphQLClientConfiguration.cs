@@ -11,7 +11,7 @@ public interface IGraphQLClientConfiguration
     
     public GraphQLHttpClientOptions GraphQLClientOptions { get; set; }
 
-    public IGraphQLClientExecutor? CustomClientService { get; set; }
+    public IGraphQLClientExecutor? ClientExecutor { get; set; }
 
     public bool ValidateAssemblies { get; set; }
     

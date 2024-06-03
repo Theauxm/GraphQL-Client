@@ -15,11 +15,11 @@ public static class ServiceExtensions
         if (options.ValidateAssemblies)
             validator.ValidateAssemblies(assemblies);
 
-        options.CustomClientService ??= new GraphQLClientExecutor(validator, options);
+        options.ClientExecutor ??= new GraphQLClientExecutor(validator, options);
 
         return services
             .AddSingleton<IGraphQLClientConfiguration>(options)
             .AddSingleton<IGraphQLClientValidator>(validator)
-            .AddSingleton<IGraphQLClientExecutor>(options.CustomClientService);
+            .AddSingleton<IGraphQLClientExecutor>(options.ClientExecutor);
     }
 }
