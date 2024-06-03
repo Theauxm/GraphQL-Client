@@ -8,10 +8,16 @@ public interface IGraphQLClientConfiguration
     public Uri BaseAddress { get; set; }
 
     public IGraphQLWebsocketJsonSerializer JsonSerializer { get; set; }
-
+    
     public GraphQLHttpClientOptions GraphQLClientOptions { get; set; }
 
     public IGraphQLClientExecutor? CustomClientService { get; set; }
 
     public bool ValidateAssemblies { get; set; }
+    
+    public GraphQLHttpClient GraphQLHttpClient { get; internal set; }
+    
+    public HttpClient HttpClient { get; set; }
+    
+    public bool DisposeHttpClient { get; set; }
 }
