@@ -16,24 +16,11 @@ public static class GraphQLClientConfigurationExtensions
 
     public static JsonElement FetchSchemaJson(IGraphQLClientConfiguration configuration)
     {
-        using var httpClient = new HttpClient();
-        httpClient.BaseAddress = configuration.BaseAddress;
-
-        var graphQLClient = new GraphQLHttpClient(
-            serializer: configuration.JsonSerializer,
-            options: configuration.GraphQLClientOptions,
-            httpClient: httpClient);
-
         var request = new GraphQLHttpRequest(IntrospectionQuery.Classic);
 
-        var response = Task.Run(async () =>
-        {
-            var result = await graphQLClient.SendQueryAsync<JsonElement>(request);
-
-            graphQLClient.Dispose();
-
-            return result;
-        }).Result;
+        var response = Task.Run(async () => 
+            await configuration.GraphQLHttpClient.SendQueryAsync<JsonElement>(request)
+            ).Result;
 
         if (response.Errors is not null)
         {

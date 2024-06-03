@@ -8,13 +8,7 @@ public class GraphQLClientExecutor(
     IGraphQLClientConfiguration graphQlClientConfiguration)
     : IGraphQLClientExecutor, IDisposable
 {
-    private readonly GraphQLHttpClient _graphQLClient = new(
-        serializer: graphQlClientConfiguration.JsonSerializer,
-        options: graphQlClientConfiguration.GraphQLClientOptions,
-        httpClient: new HttpClient()
-        {
-            BaseAddress = graphQlClientConfiguration.BaseAddress
-        });
+    private readonly GraphQLHttpClient _graphQLClient = graphQlClientConfiguration.GraphQLHttpClient;
 
     public async Task<TReturn> Run<TReturn>(IGraphQLClientRequest<TReturn> request)
     {
@@ -38,5 +32,9 @@ public class GraphQLClientExecutor(
     public void Dispose()
     {
         _graphQLClient.Dispose();
+        
+        if (graphQlClientConfiguration.DisposeHttpClient)
+            graphQlClientConfiguration.HttpClient?.Dispose();
+            
     }
 }
