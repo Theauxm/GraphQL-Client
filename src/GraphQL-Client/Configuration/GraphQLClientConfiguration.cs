@@ -16,10 +16,8 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
         bool validateAssemblies = false,
         HttpClient? httpClient = null)
     {
-        httpClient ??= new HttpClient()
-        {
-            BaseAddress = baseAddress
-        };
+        httpClient ??= new HttpClient();
+        httpClient.BaseAddress = baseAddress;
 
         jsonSerializer ??= new SystemTextJsonSerializer();
 
