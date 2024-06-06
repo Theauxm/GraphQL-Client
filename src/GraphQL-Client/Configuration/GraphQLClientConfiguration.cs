@@ -1,7 +1,7 @@
+using System.Text.Json;
 using GraphQL.Client.Abstractions.Websocket;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.SystemTextJson;
-using GraphQLParser.AST;
 
 namespace GraphQL;
 
@@ -12,6 +12,7 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
         IGraphQLClientExecutor? clientExecutor = null,
         IGraphQLWebsocketJsonSerializer? jsonSerializer = null,
         GraphQLHttpClientOptions? graphQLHttpClientOptions = null,
+        JsonSerializerOptions? jsonSerializerOptions = null,
         bool disposeHttpClient = false,
         bool validateAssemblies = false,
         HttpClient? httpClient = null)
@@ -21,6 +22,11 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
 
         jsonSerializer ??= new SystemTextJsonSerializer();
 
+        jsonSerializerOptions ??= new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+        };
+
         graphQLHttpClientOptions ??= new GraphQLHttpClientOptions();
         
         return new GraphQLClientConfiguration
@@ -28,6 +34,9 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
             BaseAddress = baseAddress,
             HttpClient = httpClient,
             ClientExecutor = clientExecutor,
+            JsonSerializerOptions = jsonSerializerOptions,
+            GraphQLClientOptions = graphQLHttpClientOptions,
+            WebsocketJsonSerializer = jsonSerializer,
             GraphQLHttpClient = new GraphQLHttpClient(
                 serializer: jsonSerializer,
                 options: graphQLHttpClientOptions,
@@ -42,7 +51,9 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
 
     public required Uri BaseAddress { get; set; }
 
-    public IGraphQLWebsocketJsonSerializer JsonSerializer { get; set; }
+    public IGraphQLWebsocketJsonSerializer WebsocketJsonSerializer { get; set; }
+    
+    public JsonSerializerOptions JsonSerializerOptions { get; set; }
 
     public GraphQLHttpClientOptions GraphQLClientOptions { get; set; }
 
