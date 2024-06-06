@@ -25,7 +25,7 @@ public class GraphQLClientExecutor(
         };
 
         return request.IsNested
-            ? request.GetNestedResponse(response.Data)
+            ? request.GetNestedResponse(response.Data, graphQlClientConfiguration.JsonSerializerOptions)
             : response.Data;
     }
 

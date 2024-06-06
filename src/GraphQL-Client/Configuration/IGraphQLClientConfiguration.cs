@@ -1,3 +1,4 @@
+using System.Text.Json;
 using GraphQL.Client.Abstractions.Websocket;
 using GraphQL.Client.Http;
 
@@ -7,7 +8,9 @@ public interface IGraphQLClientConfiguration
 {
     public Uri BaseAddress { get; set; }
 
-    public IGraphQLWebsocketJsonSerializer JsonSerializer { get; set; }
+    public IGraphQLWebsocketJsonSerializer WebsocketJsonSerializer { get; set; }
+    
+    public JsonSerializerOptions JsonSerializerOptions { get; set; }
     
     public GraphQLHttpClientOptions GraphQLClientOptions { get; set; }
 
