@@ -7,13 +7,10 @@ using GraphQL.Utils.Converters;
 
 namespace GraphQL;
 
-public class GraphQLClientConfigurationBuilder
+public class GraphQLClientConfigurationBuilder(Uri baseAddress)
 {
-    internal readonly GraphQLClientConfiguration Configuration;
-
-    public GraphQLClientConfigurationBuilder(Uri baseAddress)
-    {
-        Configuration = new GraphQLClientConfiguration(
+    public GraphQLClientConfiguration Build()
+        => new(
             baseAddress,
             WebsocketJsonSerializer,
             GraphQLClientOptions,
@@ -22,7 +19,6 @@ public class GraphQLClientConfigurationBuilder
             ValidateAssemblies,
             HttpClient
         );
-    }
 
     public IGraphQLWebsocketJsonSerializer WebsocketJsonSerializer { get; set; } = new SystemTextJsonSerializer();
     
