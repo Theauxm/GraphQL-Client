@@ -18,7 +18,7 @@ public interface IGraphQLClientConfiguration
 
     public bool ValidateAssemblies { get; set; }
     
-    public GraphQLHttpClient GraphQLHttpClient { get; internal set; }
+    public GraphQLHttpClient GraphQLHttpClient { get; }
     
     public HttpClient HttpClient { get; set; }
     
