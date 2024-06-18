@@ -9,15 +9,14 @@ namespace GraphQL;
 
 public class GraphQLClientConfiguration : IGraphQLClientConfiguration
 {
-    public static GraphQLClientConfiguration Create(
-        Uri baseAddress,
-        IGraphQLClientExecutor? clientExecutor = null,
-        IGraphQLWebsocketJsonSerializer? jsonSerializer = null,
-        GraphQLHttpClientOptions? graphQLHttpClientOptions = null,
-        JsonSerializerOptions? jsonSerializerOptions = null,
-        bool disposeHttpClient = false,
-        bool validateAssemblies = false,
-        HttpClient? httpClient = null)
+    public GraphQLClientConfiguration(
+            Uri baseAddress, 
+            IGraphQLWebsocketJsonSerializer? jsonSerializer = null,
+            GraphQLHttpClientOptions? graphQLHttpClientOptions = null,
+            JsonSerializerOptions? jsonSerializerOptions = null,
+            bool disposeHttpClient = false,
+            bool validateAssemblies = false, 
+            HttpClient? httpClient = null)
     {
         httpClient ??= new HttpClient();
         httpClient.BaseAddress = baseAddress;
@@ -35,40 +34,34 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
         };
 
         graphQLHttpClientOptions ??= new GraphQLHttpClientOptions();
-        
-        return new GraphQLClientConfiguration
-        {
-            BaseAddress = baseAddress,
-            HttpClient = httpClient,
-            ClientExecutor = clientExecutor,
-            JsonSerializerOptions = jsonSerializerOptions,
-            GraphQLClientOptions = graphQLHttpClientOptions,
-            WebsocketJsonSerializer = jsonSerializer,
-            GraphQLHttpClient = new GraphQLHttpClient(
-                serializer: jsonSerializer,
-                options: graphQLHttpClientOptions,
-                httpClient: httpClient
-            ),
-            DisposeHttpClient = disposeHttpClient,
-            ValidateAssemblies = validateAssemblies
-        };
+
+        BaseAddress = baseAddress;
+        HttpClient = httpClient;
+        JsonSerializerOptions = jsonSerializerOptions;
+        GraphQLClientOptions = graphQLHttpClientOptions;
+        WebsocketJsonSerializer = jsonSerializer;
+        ValidateAssemblies = validateAssemblies;
+        DisposeHttpClient = disposeHttpClient;
+
+        GraphQLHttpClient = new GraphQLHttpClient(
+            serializer: jsonSerializer,
+            options: graphQLHttpClientOptions,
+            httpClient: httpClient);
     }
 
-    private GraphQLClientConfiguration() { }
-
-    public required Uri BaseAddress { get; set; }
+    public Uri BaseAddress { get; set; }
 
     public IGraphQLWebsocketJsonSerializer WebsocketJsonSerializer { get; set; }
     
     public JsonSerializerOptions JsonSerializerOptions { get; set; }
 
-    public GraphQLHttpClientOptions GraphQLClientOptions { get; set; }
+    public GraphQLHttpClientOptions GraphQLClientOptions { get; set; } 
 
     public IGraphQLClientExecutor? ClientExecutor { get; set; }
 
     public bool ValidateAssemblies { get; set; }
     
-    public GraphQLHttpClient GraphQLHttpClient { get; set; }
+    public GraphQLHttpClient GraphQLHttpClient { get; internal set; }
 
     public HttpClient HttpClient { get; set; }
 
