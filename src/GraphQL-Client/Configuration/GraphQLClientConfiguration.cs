@@ -1,7 +1,9 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using GraphQL.Client.Abstractions.Websocket;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.SystemTextJson;
+using GraphQL.Utils.Converters;
 
 namespace GraphQL;
 
@@ -25,6 +27,11 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
         jsonSerializerOptions ??= new JsonSerializerOptions()
         {
             PropertyNameCaseInsensitive = true,
+            Converters =
+            {
+                new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper),
+                new DateOnlyConverter()
+            }
         };
 
         graphQLHttpClientOptions ??= new GraphQLHttpClientOptions();
