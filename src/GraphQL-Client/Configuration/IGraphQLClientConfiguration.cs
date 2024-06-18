@@ -6,21 +6,17 @@ namespace GraphQL;
 
 public interface IGraphQLClientConfiguration
 {
-    public Uri BaseAddress { get; set; }
-
-    public IGraphQLWebsocketJsonSerializer WebsocketJsonSerializer { get; set; }
+    public IGraphQLWebsocketJsonSerializer WebsocketJsonSerializer { get; }
     
-    public JsonSerializerOptions JsonSerializerOptions { get; set; }
+    public JsonSerializerOptions JsonSerializerOptions { get; }
     
-    public GraphQLHttpClientOptions GraphQLClientOptions { get; set; }
+    public GraphQLHttpClientOptions GraphQLClientOptions { get; }
 
-    public IGraphQLClientExecutor? ClientExecutor { get; set; }
-
-    public bool ValidateAssemblies { get; set; }
+    public bool ValidateAssemblies { get; }
     
     public GraphQLHttpClient GraphQLHttpClient { get; }
     
-    public HttpClient HttpClient { get; set; }
+    public HttpClient HttpClient { get; }
     
-    public bool DisposeHttpClient { get; set; }
+    public bool DisposeHttpClient { get; }
 }

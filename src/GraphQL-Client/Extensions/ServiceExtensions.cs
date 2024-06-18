@@ -11,14 +11,7 @@ public static class ServiceExtensions
         Action<GraphQLClientConfigurationBuilder>? options = null,
         params Assembly[] assemblies)
     {
-        // Create Builder to be used after Options are invoked
-        var builder = new GraphQLClientConfigurationBuilder(baseAddress);
-        
-        // Options able to be null since all values have defaults
-        options?.Invoke(builder);
-
-        var configuration = builder.Configuration;
-        configuration.HttpClient.BaseAddress = baseAddress;
+        var configuration = BuildConfiguration(baseAddress, options);
         
         var validator = new GraphQLClientValidator(configuration);
 
@@ -31,5 +24,19 @@ public static class ServiceExtensions
             .AddSingleton<IGraphQLClientConfiguration>(configuration)
             .AddSingleton<IGraphQLClientValidator>(validator)
             .AddSingleton<IGraphQLClientExecutor>(executor);
+    }
+
+    private static IGraphQLClientConfiguration BuildConfiguration(
+        Uri baseAddress,
+        Action<GraphQLClientConfigurationBuilder>? options
+    )
+    {
+        // Create Builder to be used after Options are invoked
+        var builder = new GraphQLClientConfigurationBuilder(baseAddress);
+        
+        // Options able to be null since all values have defaults
+        options?.Invoke(builder);
+
+        return builder.Build(); 
     }
 }

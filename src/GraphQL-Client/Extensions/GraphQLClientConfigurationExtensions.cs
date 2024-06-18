@@ -25,7 +25,7 @@ public static class GraphQLClientConfigurationExtensions
         if (response.Errors is not null)
         {
             throw new Exception(
-                $"Could not introspect ({configuration.BaseAddress}). Got the following errors: ({response.Errors})");
+                $"Could not introspect ({configuration.HttpClient.BaseAddress}). Got the following errors: ({response.Errors})");
         }
 
         return response.Data;
