@@ -18,6 +18,7 @@ public static class ServiceExtensions
         options?.Invoke(builder);
 
         var configuration = builder.Configuration;
+        configuration.HttpClient.BaseAddress = baseAddress;
         
         var validator = new GraphQLClientValidator(configuration);
 
