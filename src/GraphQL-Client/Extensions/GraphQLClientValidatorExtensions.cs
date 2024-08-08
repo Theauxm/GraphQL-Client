@@ -4,7 +4,10 @@ namespace GraphQL;
 
 public static class GraphQLClientValidatorExtensions
 {
-    public static GraphQLClientValidator ValidateAssemblies(this GraphQLClientValidator validator, params Assembly[] assemblies)
+    public static GraphQLClientValidator ValidateAssemblies(
+        this GraphQLClientValidator validator,
+        params Assembly[] assemblies
+    )
     {
         foreach (var assembly in assemblies)
         {

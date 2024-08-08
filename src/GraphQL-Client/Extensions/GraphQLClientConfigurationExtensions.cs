@@ -10,22 +10,22 @@ namespace GraphQL;
 
 public static class GraphQLClientConfigurationExtensions
 {
-    public static ISchema IntrospectSchema(this IGraphQLClientConfiguration configuration)
-        => FetchSchemaJson(configuration)
-            .AsSchema();
+    public static ISchema IntrospectSchema(this IGraphQLClientConfiguration configuration) =>
+        FetchSchemaJson(configuration).AsSchema();
 
     public static JsonElement FetchSchemaJson(IGraphQLClientConfiguration configuration)
     {
         var request = new GraphQLHttpRequest(IntrospectionQuery.Classic);
 
-        var response = Task.Run(async () => 
-            await configuration.GraphQLHttpClient.SendQueryAsync<JsonElement>(request)
-            ).Result;
+        var response = Task.Run(
+            async () => await configuration.GraphQLHttpClient.SendQueryAsync<JsonElement>(request)
+        ).Result;
 
         if (response.Errors is not null)
         {
             throw new Exception(
-                $"Could not introspect ({configuration.HttpClient.BaseAddress}). Got the following errors: ({response.Errors})");
+                $"Could not introspect ({configuration.HttpClient.BaseAddress}). Got the following errors: ({response.Errors})"
+            );
         }
 
         return response.Data;
@@ -33,16 +33,19 @@ public static class GraphQLClientConfigurationExtensions
 
     public static ISchema AsSchema(this JsonElement schemaJson)
     {
-        var schemaResponse = schemaJson.Deserialize<GraphQLData>(new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true,
-            Converters = { new JsonStringEnumConverter() }
-        });
+        var schemaResponse = schemaJson.Deserialize<GraphQLData>(
+            new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter() }
+            }
+        );
 
         if (schemaResponse?.__Schema is null)
         {
             throw new Exception(
-                $"Could not get data from __schema introspection. Data likely came back null. Schema: ({schemaJson.GetRawText()})");
+                $"Could not get data from __schema introspection. Data likely came back null. Schema: ({schemaJson.GetRawText()})"
+            );
         }
 
         var converter = new ASTConverter();

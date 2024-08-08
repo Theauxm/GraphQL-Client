@@ -9,10 +9,11 @@ public static class ServiceExtensions
         this IServiceCollection services,
         Uri baseAddress,
         Action<GraphQLClientConfigurationBuilder>? options = null,
-        params Assembly[] assemblies)
+        params Assembly[] assemblies
+    )
     {
         var configuration = BuildConfiguration(baseAddress, options);
-        
+
         var validator = new GraphQLClientValidator(configuration);
 
         if (configuration.ValidateAssemblies)
@@ -33,10 +34,10 @@ public static class ServiceExtensions
     {
         // Create Builder to be used after Options are invoked
         var builder = new GraphQLClientConfigurationBuilder(baseAddress);
-        
+
         // Options able to be null since all values have defaults
         options?.Invoke(builder);
 
-        return builder.Build(); 
+        return builder.Build();
     }
 }
