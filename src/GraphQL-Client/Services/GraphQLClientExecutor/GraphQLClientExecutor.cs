@@ -5,10 +5,11 @@ namespace GraphQL;
 
 public class GraphQLClientExecutor(
     IGraphQLClientValidator queryValidator,
-    IGraphQLClientConfiguration graphQlClientConfiguration)
-    : IGraphQLClientExecutor, IDisposable
+    IGraphQLClientConfiguration graphQlClientConfiguration
+) : IGraphQLClientExecutor, IDisposable
 {
-    private readonly GraphQLHttpClient _graphQLClient = graphQlClientConfiguration.GraphQLHttpClient;
+    private readonly GraphQLHttpClient _graphQLClient =
+        graphQlClientConfiguration.GraphQLHttpClient;
 
     public async Task<TReturn> Run<TReturn>(IGraphQLClientRequest<TReturn> request)
     {
@@ -20,21 +21,24 @@ public class GraphQLClientExecutor(
         {
             OperationType.Query => await _graphQLClient.SendQueryAsync<dynamic>(httpRequest),
             OperationType.Mutation => await _graphQLClient.SendMutationAsync<dynamic>(httpRequest),
-            OperationType.Subscription => throw new ArgumentException("Subscriptions Not Supported."),
+            OperationType.Subscription
+                => throw new ArgumentException("Subscriptions Not Supported."),
             _ => throw new ArgumentOutOfRangeException()
         };
 
         return request.IsNested
-            ? request.GetNestedResponse(response.Data, graphQlClientConfiguration.JsonSerializerOptions)
+            ? request.GetNestedResponse(
+                response.Data,
+                graphQlClientConfiguration.JsonSerializerOptions
+            )
             : response.Data;
     }
 
     public void Dispose()
     {
         _graphQLClient.Dispose();
-        
+
         if (graphQlClientConfiguration.DisposeHttpClient)
             graphQlClientConfiguration.HttpClient?.Dispose();
-            
     }
 }

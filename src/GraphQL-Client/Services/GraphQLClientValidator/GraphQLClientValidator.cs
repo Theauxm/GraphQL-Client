@@ -7,7 +7,8 @@ using GraphQLParser.AST;
 
 namespace GraphQL;
 
-public class GraphQLClientValidator(IGraphQLClientConfiguration graphQLClientConfiguration) : IGraphQLClientValidator
+public class GraphQLClientValidator(IGraphQLClientConfiguration graphQLClientConfiguration)
+    : IGraphQLClientValidator
 {
     public ISchema Schema { get; } = graphQLClientConfiguration.IntrospectSchema();
 
@@ -27,18 +28,15 @@ public class GraphQLClientValidator(IGraphQLClientConfiguration graphQLClientCon
         if (document.Definitions.FirstOrDefault() is not GraphQLOperationDefinition queryType)
             throw new Exception($"Could not find any query definitions in: ({query})");
 
-        var validationOptions = new ValidationOptions
-        {
-            Schema = Schema,
-            Document = document
-        };
+        var validationOptions = new ValidationOptions { Schema = Schema, Document = document };
 
         var (validationResult, _) = await _validator.ValidateAsync(validationOptions);
 
         if (!validationResult.IsValid)
         {
             throw new Exception(
-                $"GraphQL Query ({query}) is not valid with the given schema. Got the following errors: ({validationResult.Errors}");
+                $"GraphQL Query ({query}) is not valid with the given schema. Got the following errors: ({validationResult.Errors}"
+            );
         }
 
         CachedQueries[query] = queryType.Operation;

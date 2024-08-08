@@ -9,8 +9,8 @@ namespace GraphQL;
 
 public class GraphQLClientConfigurationBuilder(Uri baseAddress)
 {
-    public GraphQLClientConfiguration Build()
-        => new(
+    public GraphQLClientConfiguration Build() =>
+        new(
             baseAddress,
             WebsocketJsonSerializer,
             GraphQLClientOptions,
@@ -20,22 +20,24 @@ public class GraphQLClientConfigurationBuilder(Uri baseAddress)
             HttpClient
         );
 
-    public IGraphQLWebsocketJsonSerializer WebsocketJsonSerializer { get; set; } = new SystemTextJsonSerializer();
-    
-    public JsonSerializerOptions JsonSerializerOptions { get; set; } = new()
-    {
-        PropertyNameCaseInsensitive = true,
-        Converters =
+    public IGraphQLWebsocketJsonSerializer WebsocketJsonSerializer { get; set; } =
+        new SystemTextJsonSerializer();
+
+    public JsonSerializerOptions JsonSerializerOptions { get; set; } =
+        new()
         {
-            new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper),
-            new DateOnlyConverter()
-        }
-    };
+            PropertyNameCaseInsensitive = true,
+            Converters =
+            {
+                new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseUpper),
+                new DateOnlyConverter()
+            }
+        };
 
     public GraphQLHttpClientOptions GraphQLClientOptions { get; set; } = new();
 
     public bool ValidateAssemblies { get; set; } = false;
-    
+
     public HttpClient HttpClient { get; set; } = new();
 
     public bool DisposeHttpClient { get; set; } = false;

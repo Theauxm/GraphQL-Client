@@ -7,16 +7,16 @@ namespace GraphQL;
 public interface IGraphQLClientConfiguration
 {
     public IGraphQLWebsocketJsonSerializer WebsocketJsonSerializer { get; }
-    
+
     public JsonSerializerOptions JsonSerializerOptions { get; }
-    
+
     public GraphQLHttpClientOptions GraphQLClientOptions { get; }
 
     public bool ValidateAssemblies { get; }
-    
+
     public GraphQLHttpClient GraphQLHttpClient { get; }
-    
+
     public HttpClient HttpClient { get; }
-    
+
     public bool DisposeHttpClient { get; }
 }

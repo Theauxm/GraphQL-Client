@@ -13,6 +13,7 @@ public interface IGraphQLClientRequest<out TOut> : IGenericGraphQLClientRequest
             .Aggregate(response, (current, property) => current.GetProperty(property))
             .GetRawText();
 
-        return JsonSerializer.Deserialize<TOut>(resultData, options) ?? throw new InvalidOperationException();
+        return JsonSerializer.Deserialize<TOut>(resultData, options)
+            ?? throw new InvalidOperationException();
     }
 }
