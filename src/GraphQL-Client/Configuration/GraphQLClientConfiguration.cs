@@ -15,7 +15,7 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
         bool validateAssemblies,
         bool removeSubscriptionsFromSchema,
         HttpClient httpClient
-        )
+    )
     {
         HttpClient = httpClient;
         HttpClient.BaseAddress = baseAddress;
@@ -47,6 +47,6 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
     public HttpClient HttpClient { get; init; }
 
     public bool DisposeHttpClient { get; init; }
-    
-    public bool RemoveSubscriptionsFromSchema { get; init; } 
+
+    public bool RemoveSubscriptionsFromSchema { get; init; }
 }

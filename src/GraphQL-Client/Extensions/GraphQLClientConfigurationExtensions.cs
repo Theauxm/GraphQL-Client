@@ -31,7 +31,10 @@ public static class GraphQLClientConfigurationExtensions
         return response.Data;
     }
 
-    public static ISchema AsSchema(this JsonElement schemaJson, IGraphQLClientConfiguration configuration)
+    public static ISchema AsSchema(
+        this JsonElement schemaJson,
+        IGraphQLClientConfiguration configuration
+    )
     {
         var schemaResponse = schemaJson.Deserialize<GraphQLData>(
             new JsonSerializerOptions
