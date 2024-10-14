@@ -19,4 +19,6 @@ public interface IGraphQLClientConfiguration
     public HttpClient HttpClient { get; }
 
     public bool DisposeHttpClient { get; }
+
+    public bool RemoveSubscriptionsFromSchema { get; }
 }

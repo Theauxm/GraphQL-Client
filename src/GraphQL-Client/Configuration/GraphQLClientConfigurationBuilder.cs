@@ -17,6 +17,7 @@ public class GraphQLClientConfigurationBuilder(Uri baseAddress)
             JsonSerializerOptions,
             DisposeHttpClient,
             ValidateAssemblies,
+            RemoveSubscriptionsFromSchema,
             HttpClient
         );
 
@@ -41,4 +42,10 @@ public class GraphQLClientConfigurationBuilder(Uri baseAddress)
     public HttpClient HttpClient { get; set; } = new();
 
     public bool DisposeHttpClient { get; set; } = false;
+
+    /// <summary>
+    /// Subscriptions in the schema will require a subscription type to be added to every single client query made,
+    /// regardless of if they interact with the subscription or not, so they may be removed from the schema if not needed.
+    /// </summary>
+    public bool RemoveSubscriptionsFromSchema { get; set; } = true;
 }

@@ -13,6 +13,7 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
         JsonSerializerOptions jsonSerializerOptions,
         bool disposeHttpClient,
         bool validateAssemblies,
+        bool removeSubscriptionsFromSchema,
         HttpClient httpClient
     )
     {
@@ -24,6 +25,7 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
         WebsocketJsonSerializer = jsonSerializer;
         ValidateAssemblies = validateAssemblies;
         DisposeHttpClient = disposeHttpClient;
+        RemoveSubscriptionsFromSchema = removeSubscriptionsFromSchema;
 
         GraphQLHttpClient = new GraphQLHttpClient(
             serializer: jsonSerializer,
@@ -45,4 +47,6 @@ public class GraphQLClientConfiguration : IGraphQLClientConfiguration
     public HttpClient HttpClient { get; init; }
 
     public bool DisposeHttpClient { get; init; }
+
+    public bool RemoveSubscriptionsFromSchema { get; init; }
 }

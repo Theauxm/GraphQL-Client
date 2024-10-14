@@ -11,7 +11,7 @@ namespace GraphQL;
 public static class GraphQLClientConfigurationExtensions
 {
     public static ISchema IntrospectSchema(this IGraphQLClientConfiguration configuration) =>
-        FetchSchemaJson(configuration).AsSchema();
+        FetchSchemaJson(configuration).AsSchema(configuration);
 
     public static JsonElement FetchSchemaJson(IGraphQLClientConfiguration configuration)
     {
@@ -31,7 +31,10 @@ public static class GraphQLClientConfigurationExtensions
         return response.Data;
     }
 
-    public static ISchema AsSchema(this JsonElement schemaJson)
+    public static ISchema AsSchema(
+        this JsonElement schemaJson,
+        IGraphQLClientConfiguration configuration
+    )
     {
         var schemaResponse = schemaJson.Deserialize<GraphQLData>(
             new JsonSerializerOptions
@@ -47,6 +50,9 @@ public static class GraphQLClientConfigurationExtensions
                 $"Could not get data from __schema introspection. Data likely came back null. Schema: ({schemaJson.GetRawText()})"
             );
         }
+
+        if (configuration.RemoveSubscriptionsFromSchema)
+            schemaResponse.__Schema.SubscriptionType = null;
 
         var converter = new ASTConverter();
         var document = converter.ToDocument(schemaResponse.__Schema);
